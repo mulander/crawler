@@ -1,0 +1,33 @@
+* About
+
+This repository follows a nice series of blog posts about writing a rougelike
+game in C++. I'm doing it in Ada as a fun way to learn the language.
+
+I also think that with time, this may serve as a nice snippet base for writing
+ncurses applications in Ada.
+
+I try to keep most of the code as close to the original snippets as possible,
+including verbatim comments from the snippets in the blog post.
+
+Each commit should generally refer to a single snippet visible in the blog,
+representing a runnable state of the program.
+
+The code will diverge with time if I decide to continue working on it.
+
+* Current state
+
+Currently working on:
+ Roguelike game in C++ - Bootstrap
+ http://solarianprogrammer.com/2012/07/12/roguelike-game-cpp-11-part-1/
+
+* Requirements
+An Ada compiler and the ncurses bindings from http://invisible-island.net/ncurses/
+
+If you are running on Ubuntu works great to have the libraries going:
+ sudo apt-get install libncursesada2 libncursesada2-dev
+
+You might need to adjust ncursesada.gpr the one commited was installed by apt-get on my system.
+
+* Compilation
+
+gnatmake -P crawler.gpr
