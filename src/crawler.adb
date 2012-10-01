@@ -10,7 +10,6 @@ is
    package Curses renames Terminal_Interface.Curses;
 
    Key : Curses.Key_Code;
-   Cursor_Visibility : Curses.Cursor_Visibility := Curses.Invisible;
    -- Define the main character initial position and symbol
    Row : Curses.Line_Position := 10;
    Col : Curses.Column_Position := 10;
