@@ -94,4 +94,11 @@ begin
    end if;
    -- Clear ncurses data structures
    Curses.End_Windows; --endwin();
+exception
+   when others =>
+      -- Clear ncurses data structres and restore
+      -- the terminal on error
+      Curses.End_Windows;
+      -- and re-raise the original exception
+      raise;
 end Crawler;
