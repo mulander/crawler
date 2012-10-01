@@ -17,6 +17,9 @@ The code will diverge with time if I decide to continue working on it.
 * Current state
 
 Currently working on:
+ Roguelike game in C++ - Adding a map to the game
+ http://solarianprogrammer.com/2012/07/16/roguelike-game-cpp-11-part-2/
+Done:
  Roguelike game in C++ - Bootstrap
  http://solarianprogrammer.com/2012/07/12/roguelike-game-cpp-11-part-1/
 
