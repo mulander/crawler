@@ -41,8 +41,11 @@ is
       use type Curses.Line_Position;
       use type Curses.Column_Position;
       Key : Curses.Key_Code := Curses.Key_Home;
+      Lines : Curses.Line_Count;
+      Columns : Curses.Column_Count;
    begin
       loop
+	 Curses.Get_Size(Number_Of_Lines => Lines, Number_Of_Columns => Columns);
          -- Wait until the user presses a key
          -- Clear the screen
          -- Curses.Clear;
@@ -58,13 +61,25 @@ is
             when Curses.Real_Key_Code(Character'Pos('q')) | Curses.Real_Key_Code(Character'Pos('Q')) =>
                exit;
             when Curses.KEY_LEFT =>
-               Col := Col - 1;
+               if not (Col - 1 < 0)
+               then
+                  Col := Col - 1;
+               end if;
             when Curses.KEY_RIGHT =>
-               Col := Col + 1;
+               if not (Col + 1 > Columns)
+               then
+                  Col := Col + 1;
+               end if;
             when Curses.KEY_UP =>
-               Row := Row - 1;
+               if not (Row - 1 < 0)
+               then
+                  Row := Row - 1;
+               end if;
             when Curses.KEY_DOWN =>
-               Row := Row + 1;
+               if not (Row + 1 > Lines)
+               then
+                  Row := Row + 1;
+               end if;
             when others => -- If the user choses to stay, show the main character at position (Row,Col)
                null;
          end case;
