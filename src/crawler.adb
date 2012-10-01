@@ -27,21 +27,52 @@ is
       Curses.Set_Cursor_Visibility (Cursor_Visibility);
    end Initialize_NCurses;
 
-   procedure Game_Loop
+   procedure Erase(Row : in Curses.Line_Position;
+                   Col : in Curses.Column_Position)
    is
+   begin
+      Curses.Add (Line => Row, Column => Col, Ch => '#');
+   end Erase;
+
+   procedure Game_Loop(Main_Character : in Character;
+                       Row : in out Curses.Line_Position;
+                       Col : in out Curses.Column_Position)
+   is
+      use type Curses.Line_Position;
+      use type Curses.Column_Position;
+      Key : Curses.Key_Code := Curses.Key_Home;
    begin
       loop
          -- Wait until the user presses a key
-         Key := Curses.Get_Keystroke; --getch();
          -- Clear the screen
-         Curses.Clear;
+         -- Curses.Clear;
 
+         -- We have one Erase call as we need to perform it before each move command
+         -- no need to repeat if four times.
+         Erase(Row,Col);
+         -- Compared to the original snippet, we drop refresh()
+         -- as it seems to be not needed if we don't use the printw family
+         -- of functions. Refresh draws the 'virtual' screen to the display
+         -- and it seems to be also done by Curses.Add in our example.
          case Key is
-         when  Curses.Real_Key_Code(Character'Pos('q')) | Curses.Real_Key_Code(Character'Pos('Q')) =>
-            exit;
-         when others => -- If the user choses to stay, show the main character at position (Row,Col)
-            Curses.Add (Line => Row, Column => Col, Ch => Main_Character);
+            when Curses.Real_Key_Code(Character'Pos('q')) | Curses.Real_Key_Code(Character'Pos('Q')) =>
+               exit;
+            when Curses.KEY_LEFT =>
+               Col := Col - 1;
+            when Curses.KEY_RIGHT =>
+               Col := Col + 1;
+            when Curses.KEY_UP =>
+               Row := Row - 1;
+            when Curses.KEY_DOWN =>
+               Row := Row + 1;
+            when others => -- If the user choses to stay, show the main character at position (Row,Col)
+               null;
          end case;
+         -- Compared to the original, just one print of the main characer is
+         -- all we need to update our current position as all of our options
+         -- are related to the player updating his position.
+         Curses.Add (Line => Row, Column => Col, Ch => Main_Character);
+         Key := Curses.Get_Keystroke; --getch();
       end loop;
    end Game_Loop;
 begin
@@ -52,9 +83,15 @@ begin
    Curses.Add (Str => "Welcome to RR game." & Standard.ASCII.LF);
    Curses.Add (Str => "Press any key to start." & Standard.ASCII.LF);
    Curses.Add (Str => "If you want to quit press ""q"" or ""Q""");
-
-   -- Start the game loop
-   Game_Loop;
+   Key := Curses.Get_Keystroke;
+   if Integer(Key) not in Character'Pos('Q')|Character'Pos('q')
+   then
+      Curses.Clear;
+      -- Start the game loop
+      Game_Loop(Main_Character => Main_Character,
+                Row => Row,
+                Col => Col);
+   end if;
    -- Clear ncurses data structures
    Curses.End_Windows; --endwin();
 end Crawler;
