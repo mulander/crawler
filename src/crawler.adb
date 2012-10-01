@@ -3,6 +3,7 @@
 -- Use of this source code is governed by a BSD-style license that can be
 -- found in the LICENSE file.
 with Terminal_Interface.Curses;
+with Crawler_Interface;
 
 procedure Crawler
 is
@@ -15,17 +16,8 @@ is
    Col : Curses.Column_Position := 10;
    Main_Character : Character:= '@';
 
-   procedure Initialize_NCurses
-   is
-   begin
-      -- Initialize ncurses
-      Curses.Init_Screen; --initscr;
-      Curses.Clear; --clear;
-      Curses.Set_Echo_Mode (False);
-      Curses.Set_Cbreak_Mode (True);
-      Curses.Set_Keypad_Mode;
-      Curses.Set_Cursor_Visibility (Cursor_Visibility);
-   end Initialize_NCurses;
+   -- Start ncurses
+   Screen : Crawler_Interface.Screen;
 
    procedure Erase(Row : in Curses.Line_Position;
                    Col : in Curses.Column_Position)
@@ -91,8 +83,6 @@ is
       end loop;
    end Game_Loop;
 begin
-   -- Start ncurses
-   Initialize_NCurses;
    -- Printw is not ported binded by design
    -- Print a welcome message on the screen
    Curses.Add (Str => "Welcome to RR game." & Standard.ASCII.LF);
@@ -107,13 +97,4 @@ begin
                 Row => Row,
                 Col => Col);
    end if;
-   -- Clear ncurses data structures
-   Curses.End_Windows; --endwin();
-exception
-   when others =>
-      -- Clear ncurses data structres and restore
-      -- the terminal on error
-      Curses.End_Windows;
-      -- and re-raise the original exception
-      raise;
 end Crawler;
