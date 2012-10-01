@@ -1,5 +1,4 @@
 with Terminal_Interface.Curses;
-with Ada.Text_IO;
 
 package body Crawler_Interface is
    overriding procedure Initialize (This: in out Screen)
@@ -19,7 +18,6 @@ package body Crawler_Interface is
    overriding procedure Finalize (This: in out Screen)
    is
       package Curses renames Terminal_Interface.Curses;
-      package T_IO renames Ada.Text_IO;
    begin
       -- Clear ncurses data structures
       Curses.End_Windows;
