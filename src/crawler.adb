@@ -66,7 +66,7 @@ is
                   Col := Col - 1;
                end if;
             when Curses.KEY_RIGHT =>
-               if not (Col + 1 > Columns)
+               if not (Col >= Columns -2)
                then
                   Col := Col + 1;
                end if;
@@ -76,7 +76,7 @@ is
                   Row := Row - 1;
                end if;
             when Curses.KEY_DOWN =>
-               if not (Row + 1 > Lines)
+               if not (Row >= Lines -2)
                then
                   Row := Row + 1;
                end if;
