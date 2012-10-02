@@ -4,16 +4,14 @@
 -- found in the LICENSE file.
 with Terminal_Interface.Curses;
 with Crawler_Interface;
+with Crawler.Entities;
 
-procedure Crawler
+procedure Main
 is
    package Curses renames Terminal_Interface.Curses;
+   package Entities renames Crawler.Entities;
 
    Key : Curses.Key_Code;
-   -- Define the main character initial position and symbol
-   Row : Curses.Line_Position := 10;
-   Col : Curses.Column_Position := 10;
-   Main_Character : Character:= '@';
 
    -- Start ncurses
    Screen : Crawler_Interface.Screen;
@@ -25,17 +23,25 @@ is
       Curses.Add (Line => Row, Column => Col, Ch => '#');
    end Erase;
 
-   procedure Game_Loop(Main_Character : in Character;
-                       Row : in out Curses.Line_Position;
-                       Col : in out Curses.Column_Position)
+   procedure Game_Loop
    is
       use type Curses.Line_Position;
       use type Curses.Column_Position;
       Key : Curses.Key_Code := Curses.Key_Home;
       Lines : Curses.Line_Count;
       Columns : Curses.Column_Count;
+
+      Row : Curses.Line_Position := 10;
+      Col : Curses.Column_Position := 10;
+
+      -- Define the main character initial position and symbol
+      Main_Character : Entities.Character := Entities.Make(Symbol => '@',
+                                                           Row    => Row,
+                                                           Col    => Col);
    begin
       loop
+         Row := Entities.Get_Row (Main_Character);
+         Col := Entities.Get_Col (Main_Character);
 	 Curses.Get_Size(Number_Of_Lines => Lines, Number_Of_Columns => Columns);
          -- Wait until the user presses a key
          -- Clear the screen
@@ -43,7 +49,7 @@ is
 
          -- We have one Erase call as we need to perform it before each move command
          -- no need to repeat if four times.
-         Erase(Row,Col);
+         Erase(Entities.Get_Row(Main_Character),Entities.Get_Col(Main_Character));
          -- Compared to the original snippet, we drop refresh()
          -- as it seems to be not needed if we don't use the printw family
          -- of functions. Refresh draws the 'virtual' screen to the display
@@ -74,10 +80,15 @@ is
             when others => -- If the user choses to stay, show the main character at position (Row,Col)
                null;
          end case;
+         Entities.Set_Position( Main_Character
+                               ,Row => Row
+                               ,Col => Col);
          -- Compared to the original, just one print of the main characer is
          -- all we need to update our current position as all of our options
          -- are related to the player updating his position.
-         Curses.Add (Line => Row, Column => Col, Ch => Main_Character);
+         Curses.Add (Line => Entities.Get_Row(Main_Character)
+                    ,Column => Entities.Get_Col(Main_Character)
+                    ,Ch => Entities.Get_Symbol(Main_Character));
          Key := Curses.Get_Keystroke; --getch();
       end loop;
    end Game_Loop;
@@ -92,8 +103,6 @@ begin
    then
       Curses.Clear;
       -- Start the game loop
-      Game_Loop(Main_Character => Main_Character,
-                Row => Row,
-                Col => Col);
+      Game_Loop;
    end if;
-end Crawler;
+end Main;
