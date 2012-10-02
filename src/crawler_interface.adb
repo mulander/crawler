@@ -5,7 +5,7 @@
 with Terminal_Interface.Curses;
 
 package body Crawler_Interface is
-   overriding procedure Initialize (This: in out Screen)
+   overriding procedure Initialize (This : in out Screen)
    is
       package Curses renames Terminal_Interface.Curses;
       Cursor_Visibility : Curses.Cursor_Visibility := Curses.Invisible;
@@ -17,13 +17,29 @@ package body Crawler_Interface is
       Curses.Set_Cbreak_Mode (True);
       Curses.Set_Keypad_Mode;
       Curses.Set_Cursor_Visibility (Cursor_Visibility);
+
+      Curses.Get_Size(Number_Of_Lines => This.Height
+                      ,Number_Of_Columns => This.Width);
    end Initialize;
 
-   overriding procedure Finalize (This: in out Screen)
+   overriding procedure Finalize (This : in out Screen)
    is
       package Curses renames Terminal_Interface.Curses;
    begin
       -- Clear ncurses data structures
       Curses.End_Windows;
    end Finalize;
+
+   function Get_Height(This : in Screen) return Curses.Line_Count
+   is
+   begin
+      return This.Height;
+   end Get_Height;
+
+   function Get_Width(This : in Screen) return Curses.Column_Count
+   is
+   begin
+      return This.Width;
+   end Get_Width;
+
 end Crawler_Interface;

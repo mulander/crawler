@@ -28,8 +28,11 @@ is
       use type Curses.Line_Position;
       use type Curses.Column_Position;
       Key : Curses.Key_Code := Curses.Key_Home;
-      Lines : Curses.Line_Count;
-      Columns : Curses.Column_Count;
+
+      -- The C++ implementation doesn't refresh on each
+      -- tick so we also retrieve the dimensions on start.
+      Lines : Curses.Line_Count := Screen.Get_Height;
+      Columns : Curses.Column_Count := Screen.Get_Width;
 
       Row : Curses.Line_Position := 10;
       Col : Curses.Column_Position := 10;
@@ -42,7 +45,6 @@ is
       loop
          Row := Entities.Get_Row (Main_Character);
          Col := Entities.Get_Col (Main_Character);
-	 Curses.Get_Size(Number_Of_Lines => Lines, Number_Of_Columns => Columns);
          -- Wait until the user presses a key
          -- Clear the screen
          -- Curses.Clear;
