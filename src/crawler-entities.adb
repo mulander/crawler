@@ -5,7 +5,7 @@ package body Crawler.Entities is
                  Col : Curses.Column_Position) return Character
    is
    begin
-      return (Symbol => Symbol, Row => 10, Col => 10);
+      return (Symbol => Symbol, Row => Row, Col => Col);
    end Make;
 
    procedure Set_Position(This : out Character;
