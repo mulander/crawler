@@ -150,7 +150,7 @@ package body Crawler_Interface is
 
 
 
-   procedure internal_Add (This : in Frame;
+   procedure Internal_Add (This : in Frame;
                            Char : in Character;
                            Row : in Curses.Line_Position;
                            Col : in Curses.Column_Position)
@@ -191,7 +191,7 @@ package body Crawler_Interface is
    is
       package Entities renames Crawler.Entities;
    begin
-      This.internal_Add (Char => Entities.Get_Symbol (Character),
+      This.Internal_Add (Char => Entities.Get_Symbol (Character),
                          Row  => Entities.Get_Row (Character),
                          Col  => Entities.Get_Col (Character));
    end Add;
@@ -212,7 +212,7 @@ package body Crawler_Interface is
          and then (Col >= 0 and then Col < This.Width))
       then
          This.Erase (Character);
-         This.internal_Add (Char => Entities.Get_Symbol (Character),
+         This.Internal_Add (Char => Entities.Get_Symbol (Character),
                             Row  => Row,
                             Col  => Col);
          Crawler.Entities.Set_Position (Character, Row => Row, Col => Col);
@@ -303,7 +303,7 @@ package body Crawler_Interface is
       loop
          for x in 0 .. Max_Width-1
          loop
-            This.internal_Add (Char => '0',
+            This.Internal_Add (Char => '0',
                                Row  => y,
                                Col  => x);
          end loop;
@@ -315,7 +315,7 @@ package body Crawler_Interface is
       loop
          for x in Max_Width .. This.Width-1
          loop
-            This.internal_Add (Char => '1',
+            This.Internal_Add (Char => '1',
                                Row  => y,
                                Col  => x);
          end loop;
@@ -327,7 +327,7 @@ package body Crawler_Interface is
       loop
          for x in 0 .. This.Width-1
          loop
-            This.internal_Add (Char => '2',
+            This.Internal_Add (Char => '2',
                                Row  => y,
                                Col  => x);
          end loop;
@@ -340,7 +340,7 @@ package body Crawler_Interface is
       loop
          for x in Max_Width .. This.Width-1
          loop
-            This.internal_Add (Char => '3',
+            This.Internal_Add (Char => '3',
                                Row  => y,
                                Col  => x);
          end loop;
@@ -350,11 +350,11 @@ package body Crawler_Interface is
 
       for y in 0 .. This.Height-1
       loop
-         This.internal_Add (Char => '-',
+         This.Internal_Add (Char => '-',
                             Row  => y,
                             Col  => 0);
 
-         This.internal_Add (Char => '-',
+         This.Internal_Add (Char => '-',
                             Row  => y,
                             Col  => This.Width - 1);
       end loop;
@@ -363,11 +363,11 @@ package body Crawler_Interface is
 
       for x in 0 .. This.Width-1
       loop
-         This.internal_Add (Char => '|',
+         This.Internal_Add (Char => '|',
                             Row  => 0,
                             Col  => x);
 
-         This.internal_Add (Char => '|',
+         This.Internal_Add (Char => '|',
                             Row  => This.Height - 1,
                             Col  => x);
       end loop;
@@ -416,7 +416,7 @@ package body Crawler_Interface is
    is
       package Entities renames Crawler.Entities;
    begin
-      This.internal_Add (Char => ' ',
+      This.Internal_Add (Char => ' ',
                          Row  => Entities.Get_Row (Character),
                          Col  => Entities.Get_Col (Character));
    end Erase;
