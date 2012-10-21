@@ -115,4 +115,10 @@ private
 
    overriding procedure Finalize (This: in out Frame);
 
+
+   procedure Internal_Add (This : in Frame;
+                           Char : in Character;
+                           Row : in Curses.Line_Position;
+                           Col : in Curses.Column_Position);
+
 end Crawler_Interface;

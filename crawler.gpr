@@ -11,5 +11,17 @@ project Crawler is
       for Default_Switches ("ada") use ("-gnat12");
    end Compiler;
 
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-x");
+   end Builder;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
 end Crawler;
 
